@@ -3,7 +3,9 @@ package com.wills.carl.bakingrecipes.model;
 
 import android.support.annotation.NonNull;
 
-public class Step implements Comparable<Step> {
+import java.io.Serializable;
+
+public class Step implements Comparable<Step>, Serializable {
 
     int id;
     String shortDesc;

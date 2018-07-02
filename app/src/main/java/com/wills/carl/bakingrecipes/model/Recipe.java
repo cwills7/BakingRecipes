@@ -1,8 +1,9 @@
 package com.wills.carl.bakingrecipes.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Recipe {
+public class Recipe implements Serializable{
 
     int id;
     String name;

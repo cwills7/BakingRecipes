@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         recipeList = ParseJSON.parseJson(this);
 
         mrecipeCardRv.setHasFixedSize(true);
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
         layoutManager.canScrollVertically();
         mrecipeCardRv.setLayoutManager(layoutManager);
         recipeItemAdapter = new RecipeItemAdapter(this, recipeList);

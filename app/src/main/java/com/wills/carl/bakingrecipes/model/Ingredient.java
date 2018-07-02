@@ -1,6 +1,8 @@
 package com.wills.carl.bakingrecipes.model;
 
-public class Ingredient {
+import java.io.Serializable;
+
+public class Ingredient implements Serializable{
 
     double quantity;
     String measure;

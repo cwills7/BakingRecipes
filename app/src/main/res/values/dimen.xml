@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="smaller_margin">8dp</dimen>
     <dimen name="standard_margin">16dp</dimen>
+    <dimen name="standard_elevation">4dp</dimen>
+    <dimen name="large_elevation">16dp</dimen>
+
+    <dimen name="standard_heading">24sp</dimen>
+    <dimen name="standard_body">14sp</dimen>
+    <dimen name="standard_caption">12sp</dimen>
 </resources>
