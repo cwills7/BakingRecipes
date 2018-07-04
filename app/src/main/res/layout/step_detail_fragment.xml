@@ -3,7 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/step__fragment_container">
+    android:id="@+id/step_fragment_container">
+
+    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+        android:id="@+id/exo_pv"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp">
+    </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
 
     <TextView
         android:id="@+id/step_instructions"
@@ -11,6 +17,7 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/standard_heading"
         android:textColor="@android:color/black"
+        android:layout_below="@id/exo_pv"
         android:padding="@dimen/smaller_margin"/>
 
 </RelativeLayout>

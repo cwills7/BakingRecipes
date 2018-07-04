@@ -45,8 +45,7 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecipeDetailAdapte
        if (position > 0) {
            final Step step = steps.get(position-1);
 
-           holder.ingredientTv.setText(step.getId()
-                   + ". " + step.getShortDesc());
+           holder.ingredientTv.setText(step.getId() + ". " + step.getShortDesc());
            holder.detailCv.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {

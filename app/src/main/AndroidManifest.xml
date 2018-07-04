@@ -16,9 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RecipeDetail">
+        <activity android:name=".RecipeDetail"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode">
         </activity>
         <activity android:name=".StepDetail"/>
     </application>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
 </manifest>
