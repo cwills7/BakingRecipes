@@ -24,7 +24,7 @@ public class StepDetail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.step_detail);
+        setContentView(R.layout.step_detail_fragment);
         ButterKnife.bind(this);
 
         final Step step = (Step) getIntent().getSerializableExtra("currentStep");

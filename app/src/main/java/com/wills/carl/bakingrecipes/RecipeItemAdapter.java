@@ -2,7 +2,11 @@ package com.wills.carl.bakingrecipes;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,11 +25,13 @@ public class RecipeItemAdapter extends RecyclerView.Adapter<RecipeItemAdapter.Vi
 
     private final LayoutInflater inflater;
     private final ArrayList<Recipe> recipes;
+    private Context context;
 
 
     public RecipeItemAdapter(Context c, ArrayList<Recipe> recipeList){
         this.inflater = LayoutInflater.from(c);
         recipes = recipeList;
+        context = c;
     }
 
     @NonNull
@@ -39,12 +45,9 @@ public class RecipeItemAdapter extends RecyclerView.Adapter<RecipeItemAdapter.Vi
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final Recipe recipe = recipes.get(position);
         holder.cardNameTv.setText(recipe.getName());
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
+        holder.cardNameTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent detailIntent = new Intent(v.getContext(), RecipeDetail.class);
-                detailIntent.putExtra("recipe", recipe);
-                v.getContext().startActivity(detailIntent);
             }
         });
 
@@ -57,7 +60,6 @@ public class RecipeItemAdapter extends RecyclerView.Adapter<RecipeItemAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.recipe_card_name) TextView cardNameTv;
-        @BindView(R.id.recipe_card_rv) CardView cardView;
         private ViewHolder(final View v){
             super(v);
             ButterKnife.bind(this, v);

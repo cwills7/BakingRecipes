@@ -13,7 +13,6 @@ import com.wills.carl.bakingrecipes.model.Recipe;
 public class RecipeDetailFragment extends Fragment {
 
     RecyclerView recipeDetailRv;
-
     Recipe recipe;
     RecipeDetailAdapter recipeDetailAdapter;
     public RecipeDetailFragment(){
@@ -22,7 +21,6 @@ public class RecipeDetailFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        recipeDetailRv = (RecyclerView) container.findViewById(R.id.recipe_detail_rv);
 
         if (getArguments() != null){
             recipe = (Recipe) getArguments().getSerializable("recipe");
@@ -30,6 +28,7 @@ public class RecipeDetailFragment extends Fragment {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         View root = inflater.inflate(R.layout.recipe_detail_fragment, container, false);
+        recipeDetailRv = (RecyclerView) root.findViewById(R.id.recipe_detail_rv);
         recipeDetailRv.setHasFixedSize(true);
         layoutManager.canScrollVertically();
         recipeDetailRv.setLayoutManager(layoutManager);

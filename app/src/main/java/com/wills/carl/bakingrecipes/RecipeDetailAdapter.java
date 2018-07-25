@@ -46,15 +46,15 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecipeDetailAdapte
            final Step step = steps.get(position-1);
 
            holder.ingredientTv.setText(step.getId() + ". " + step.getShortDesc());
-           holder.detailCv.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View v) {
-                   Intent detailIntent = new Intent(v.getContext(), StepDetail.class);
-                   detailIntent.putExtra("stepList", steps);
-                   detailIntent.putExtra("currentStep", step);
-                   v.getContext().startActivity(detailIntent);
-               }
-           });
+            holder.ingredientTv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent detailIntent = new Intent(v.getContext(), StepDetail.class);
+                    detailIntent.putExtra("stepList", steps);
+                    detailIntent.putExtra("currentStep", step);
+                    v.getContext().startActivity(detailIntent);
+                }
+            });
        } else{
            holder.ingredientTv.setText(printIngredients());
        }
@@ -68,7 +68,6 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecipeDetailAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.ingredients_tv) TextView ingredientTv;
-        @BindView(R.id.detail_cv) CardView detailCv;
         private ViewHolder(final View v){
             super(v);
             ButterKnife.bind(this, v);
