@@ -11,7 +11,7 @@ public class RecipeDetail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.recipe_detail_fragment);
+        setContentView(R.layout.recipe_detail);
 
         Recipe recipe = (Recipe) getIntent().getSerializableExtra("recipe");
 
@@ -26,7 +26,8 @@ public class RecipeDetail extends AppCompatActivity {
         RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
         recipeDetailFragment.setArguments(bundle);
         fragmentManager.beginTransaction()
-            .add(R.id.detail_container, recipeDetailFragment).commit();
+                .add(R.id.recipe_detail_frag, recipeDetailFragment)
+                .commit();
 
 
     }

@@ -48,9 +48,11 @@ public class RecipeItemAdapter extends RecyclerView.Adapter<RecipeItemAdapter.Vi
         holder.cardNameTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent detailIntent = new Intent(v.getContext(), RecipeDetail.class);
+                detailIntent.putExtra("recipe", recipe);
+                v.getContext().startActivity(detailIntent);
             }
         });
-
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcel;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,8 @@ public class StepDetailFragment extends Fragment{
 
         if(step.getVideoUrl() != null) {
             preparePlayer();
+        } else {
+            Log.d("EXO:", "Video URL is empty!!");
         }
 
 

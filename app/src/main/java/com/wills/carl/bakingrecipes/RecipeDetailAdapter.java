@@ -2,9 +2,11 @@ package com.wills.carl.bakingrecipes;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,10 +44,10 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecipeDetailAdapte
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
-       if (position > 0) {
-           final Step step = steps.get(position-1);
-
-           holder.ingredientTv.setText(step.getId() + ". " + step.getShortDesc());
+        if (position > 0) {
+            final Step step = steps.get(position-1);
+            Log.d("DEBUG", "Adding Step! " + step.getShortDesc());
+            holder.ingredientTv.setText(step.getId() + ". " + step.getShortDesc());
             holder.ingredientTv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -55,9 +57,10 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecipeDetailAdapte
                     v.getContext().startActivity(detailIntent);
                 }
             });
-       } else{
-           holder.ingredientTv.setText(printIngredients());
-       }
+        } else{
+            holder.ingredientTv.setText(printIngredients());
+            Log.d("DEBUG", "Adding Ingreds! ");
+        }
 
     }
 
@@ -67,10 +70,10 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecipeDetailAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.ingredients_tv) TextView ingredientTv;
+        public TextView ingredientTv;
         private ViewHolder(final View v){
             super(v);
-            ButterKnife.bind(this, v);
+            ingredientTv = v.findViewById(R.id.ingredients_tv);
         }
     }
 
@@ -79,7 +82,6 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecipeDetailAdapte
         for(Ingredient i : ingredients){
             result = result + "  " + i.getQuantity() + " " + i.getMeasure() + "  " +i.getName()+ "\n";
         }
-
         return result;
     }
 

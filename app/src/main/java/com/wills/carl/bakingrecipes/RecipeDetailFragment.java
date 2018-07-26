@@ -26,15 +26,16 @@ public class RecipeDetailFragment extends Fragment {
             recipe = (Recipe) getArguments().getSerializable("recipe");
         }
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         View root = inflater.inflate(R.layout.recipe_detail_fragment, container, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(root.getContext(), LinearLayoutManager.VERTICAL, false);
+
         recipeDetailRv = (RecyclerView) root.findViewById(R.id.recipe_detail_rv);
-        recipeDetailRv.setHasFixedSize(true);
         layoutManager.canScrollVertically();
         recipeDetailRv.setLayoutManager(layoutManager);
-        recipeDetailAdapter = new RecipeDetailAdapter(this.getContext(), recipe.getSteps(), recipe.getIngredients());
+        recipeDetailAdapter = new RecipeDetailAdapter(root.getContext(), recipe.getSteps(), recipe.getIngredients());
         recipeDetailRv.setAdapter(recipeDetailAdapter);
 
         return root;
     }
+
 }

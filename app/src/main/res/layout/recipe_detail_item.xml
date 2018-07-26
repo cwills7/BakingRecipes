@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView
+    android:id="@+id/ingredients_tv"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/textview_border">
-
-        <TextView
-            android:id="@+id/ingredients_tv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="@dimen/standard_heading"
-            android:textColor="@android:color/black"
-            android:padding="@dimen/smaller_margin"/>
+    android:textSize="@dimen/standard_heading"
+    android:textColor="@android:color/black"
+    android:padding="@dimen/smaller_margin"
+    android:background="@drawable/textview_border"
+    xmlns:android="http://schemas.android.com/apk/res/android" />
 
 
-</LinearLayout>

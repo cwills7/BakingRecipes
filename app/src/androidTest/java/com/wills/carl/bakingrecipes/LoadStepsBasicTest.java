@@ -75,6 +75,6 @@ public class LoadStepsBasicTest {
 
         onView(withId(R.id.recipe_detail_rv))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(4, click()));
-        onView(withText("Press the cookie crumb mixture into the prepared pie pan and bake for 12 minutes. Let crust cool to room temperature.")).check(matches(isDisplayed()));
+        onView(withText("3. Press the cookie crumb mixture into the prepared pie pan and bake for 12 minutes. Let crust cool to room temperature.")).check(matches(isDisplayed()));
     }
 }
