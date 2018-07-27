@@ -87,4 +87,12 @@ public class Recipe implements Serializable{
     }
 
 
+    public String printIngredients(){
+        String result = "Ingredients for " + name + ": \n";
+        for(Ingredient i : ingredients){
+            result = result + "  " + i.getQuantity() + " " + i.getMeasure() + "  " +i.getName()+ "\n";
+        }
+        return result;
+    }
+
 }

@@ -2,6 +2,7 @@ package com.wills.carl.bakingrecipes;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.wills.carl.bakingrecipes.model.Ingredient;
 import com.wills.carl.bakingrecipes.model.Recipe;
 
 import java.util.ArrayList;
@@ -44,6 +46,7 @@ public class RecipeItemAdapter extends RecyclerView.Adapter<RecipeItemAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final Recipe recipe = recipes.get(position);
+        storeIngredsInSharedPref(recipe);
         holder.cardNameTv.setText(recipe.getName());
         holder.cardNameTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +70,15 @@ public class RecipeItemAdapter extends RecyclerView.Adapter<RecipeItemAdapter.Vi
             ButterKnife.bind(this, v);
 
         }
+    }
+
+    public void storeIngredsInSharedPref(Recipe recipe){
+        SharedPreferences prefs = context.getSharedPreferences("Prefs", 0);
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putString("ingreds", recipe.printIngredients());
+        edit.apply();
+
+
     }
 
 

@@ -22,13 +22,12 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.recipe_card_rv) RecyclerView mrecipeCardRv;
-    //@BindView(R.id.subtitle) TextView subtitle;
-    //@BindView(R.id.footer) TextView footer;
 
     @Nullable
     private SimpleIdlerResource mIdlingResource;
     private RecipeItemAdapter recipeItemAdapter;
     private ArrayList<Recipe> recipeList;
+    boolean twoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +35,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        twoPane = false;
+        if (findViewById(R.id.twoPaneInd) != null){
+            twoPane = true;
+        }
+
         recipeList = ParseJSON.parseJson(this);
 
         mrecipeCardRv.setHasFixedSize(true);
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
+        GridLayoutManager layoutManager;
+        if (twoPane){
+            layoutManager = new GridLayoutManager(this, 3);
+        } else {
+            layoutManager = new GridLayoutManager(this, 1);
+        }
         layoutManager.canScrollVertically();
         mrecipeCardRv.setLayoutManager(layoutManager);
         recipeItemAdapter = new RecipeItemAdapter(this, recipeList);

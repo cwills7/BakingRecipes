@@ -21,6 +21,8 @@ public class StepDetail extends AppCompatActivity {
     int currentId;
     ArrayList<Step> stepList;
 
+    boolean twoPane;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -28,40 +30,50 @@ public class StepDetail extends AppCompatActivity {
         ButterKnife.bind(this);
 
         final Step step = (Step) getIntent().getSerializableExtra("currentStep");
-         stepList = (ArrayList<Step>) getIntent().getSerializableExtra("stepList");
-
+        stepList = (ArrayList<Step>) getIntent().getSerializableExtra("stepList");
+        twoPane = false;
         currentId = step.getId();
 
         checkBounds(currentId);
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("step", step);
+
+        if (findViewById(R.id.step_detail_md) != null){
+            twoPane = true;
+        }
+
         updateFragments(bundle);
 
         //Create Fragments and add them.
         //Check to make sure the screen orientation.
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle b = new Bundle();
-                b.putSerializable("step", stepList.get(currentId-1));
-                updateFragments(b);
-                currentId--;
-                checkBounds(currentId);
-            }
-        });
+        if(twoPane){
+            backBtn.setVisibility(View.INVISIBLE);
+            nextBtn.setVisibility(View.INVISIBLE);
+        } else {
+            backBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle b = new Bundle();
+                    b.putSerializable("step", stepList.get(currentId - 1));
+                    updateFragments(b);
+                    currentId--;
+                    checkBounds(currentId);
+                }
+            });
 
-        nextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle b = new Bundle();
-                b.putSerializable("step", stepList.get(currentId+1));
-                updateFragments(b);
-                currentId++;
-                checkBounds(currentId);
-            }
-        });
+            nextBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle b = new Bundle();
+                    b.putSerializable("step", stepList.get(currentId + 1));
+                    updateFragments(b);
+                    currentId++;
+                    checkBounds(currentId);
+                }
+            });
+        }
 
 
 
@@ -69,17 +81,34 @@ public class StepDetail extends AppCompatActivity {
 
     private void updateFragments(Bundle bundle) {
         FragmentManager fragmentManager = getSupportFragmentManager();
+
         StepDetailFragment stepDetailFragment = new StepDetailFragment();
+        RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
         stepDetailFragment.setArguments(bundle);
-        if(fragmentManager.findFragmentById(R.id.step_container) != null) {
+        if(!twoPane) {
+            if (fragmentManager.findFragmentById(R.id.step_container) != null) {
+                fragmentManager
+                        .beginTransaction()
+                        .remove(fragmentManager.findFragmentById(R.id.step_container)).commit();
+            }
             fragmentManager
                     .beginTransaction()
-                    .remove(fragmentManager.findFragmentById(R.id.step_container)).commit();
+                    .add(R.id.step_container, stepDetailFragment)
+                    .commit();
+        } else {
+            if (fragmentManager.findFragmentById(R.id.step_container) != null &&
+                    fragmentManager.findFragmentById(R.id.step_detail_md) != null) {
+                fragmentManager
+                        .beginTransaction()
+                        .remove(fragmentManager.findFragmentById(R.id.step_container))
+                        .remove(fragmentManager.findFragmentById(R.id.step_detail_md)).commit();
+            }
+            fragmentManager
+                    .beginTransaction()
+                    .add(R.id.step_container, recipeDetailFragment)
+                    .add(R.id.step_detail_md, stepDetailFragment)
+                    .commit();
         }
-        fragmentManager
-                .beginTransaction()
-                .add(R.id.step_container, stepDetailFragment)
-                .commit();
     }
 
     private void checkBounds(int currentId){
