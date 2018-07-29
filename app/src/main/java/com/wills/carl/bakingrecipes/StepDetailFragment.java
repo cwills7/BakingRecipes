@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -31,8 +32,14 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 import com.wills.carl.bakingrecipes.model.Step;
 
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,6 +48,7 @@ public class StepDetailFragment extends Fragment{
 
     @BindView(R.id.step_instructions) TextView instructions;
     @BindView(R.id.exo_pv) SimpleExoPlayerView playerView;
+    @BindView(R.id.step_image) ImageView imageView;
 
     Step step;
     SimpleExoPlayer player;
@@ -61,9 +69,14 @@ public class StepDetailFragment extends Fragment{
         View root = inflater.inflate(R.layout.step_detail_fragment, container, false);
         ButterKnife.bind(this, root);
 
-        if(step.getVideoUrl() != null) {
+        playerView.setVisibility(View.GONE);
+        imageView.setVisibility(View.GONE);
+
+        if(step.getVideoUrl() != null && !step.getVideoUrl().isEmpty()) {
             preparePlayer();
-        } else {
+        } else if (step.getThumbnailUrl() != null && !step.getThumbnailUrl().isEmpty()) {
+            prepareIV(step.getThumbnailUrl());
+        } else{
             Log.d("EXO:", "Video URL is empty!!");
         }
 
@@ -84,27 +97,41 @@ public class StepDetailFragment extends Fragment{
     }
 
     private void preparePlayer() {
+       try {
+           playerView.setVisibility(View.VISIBLE);
+           Uri uri = Uri.parse(step.getVideoUrl());
 
-        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        TrackSelection.Factory videoTrackFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        TrackSelector trackSelector = new DefaultTrackSelector(videoTrackFactory);
+           BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+           TrackSelection.Factory videoTrackFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+           TrackSelector trackSelector = new DefaultTrackSelector(videoTrackFactory);
 
-        player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, new DefaultLoadControl());
+           player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, new DefaultLoadControl());
 
-        playerView.requestFocus();
-        playerView.setPlayer(player);
+           playerView.requestFocus();
+           playerView.setPlayer(player);
 
-        DataSource.Factory dsf = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "BakingRecipes"));
-        Uri uri = Uri.parse(step.getVideoUrl());
-        MediaSource source = new ExtractorMediaSource.Factory(dsf)
-                    .createMediaSource(uri);
+           DataSource.Factory dsf = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "BakingRecipes"));
+           MediaSource source = new ExtractorMediaSource.Factory(dsf)
+                   .createMediaSource(uri);
 
-        player.prepare(source);
-        //player.setPlayWhenReady(true);
 
-       // player.release();
+           player.prepare(source);
+       } catch(Exception e){
+           player.release();
+           playerView.setVisibility(View.GONE);
+           prepareIV(step.getVideoUrl());
+       }
     }
 
-
-
+    private void prepareIV(String urlString){
+        try {
+            imageView.setVisibility(View.VISIBLE);
+            Picasso.with(this.getContext())
+                    .load(urlString)
+                    .into(imageView);
+        }catch (Exception e){
+            imageView.setVisibility(View.GONE);
+            Log.e("Step", "Cannot parse step media");
+        }
+    }
 }

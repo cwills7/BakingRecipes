@@ -28,6 +28,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withResourceName;
 import static android.support.test.espresso.matcher.ViewMatchers.withTagValue;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.anything;
 
 @RunWith(AndroidJUnit4.class)
 public class LoadStepsBasicTest {
@@ -72,9 +73,7 @@ public class LoadStepsBasicTest {
     public void recipeStepClickShowsStepInfo(){
         onView(withId(R.id.recipe_card_rv))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-
-        onView(withId(R.id.recipe_detail_rv))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(4, click()));
-        onView(withText("3. Press the cookie crumb mixture into the prepared pie pan and bake for 12 minutes. Let crust cool to room temperature.")).check(matches(isDisplayed()));
+        onData(anything()).inAdapterView(withId(R.id.recipe_detail_gv)).atPosition(0).perform(click());
+        onView(withText("Recipe Introduction")).check(matches(isDisplayed()));
     }
 }

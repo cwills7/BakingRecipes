@@ -4,6 +4,9 @@
     <dimen name="standard_margin">16dp</dimen>
     <dimen name="standard_elevation">4dp</dimen>
     <dimen name="large_elevation">16dp</dimen>
+    <dimen name="fragment_width">54dp</dimen>
+    <dimen name="standard_pad">8dp</dimen>
+
 
     <dimen name="standard_heading">24sp</dimen>
     <dimen name="standard_body">14sp</dimen>

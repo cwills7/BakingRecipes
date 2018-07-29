@@ -2,22 +2,27 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/detail_container"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:scaleType="centerInside">
+    android:orientation="horizontal">
 
     <FrameLayout
         android:name="com.wills.carl.bakingrecipes.RecipeDetailFragment"
-        android:layout_width="wrap_content"
+        android:layout_width="400dp"
         android:layout_height="match_parent"
         android:id="@+id/recipe_detail_frag">
     </FrameLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"/>
 
     <FrameLayout
         android:name="com.wills.carl.bakingrecipes.StepDetailFragment"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:id="@+id/step_detail_md"/>
+        android:id="@+id/step_detail_frag"
+        android:scaleType="centerInside"/>
 
 </LinearLayout>

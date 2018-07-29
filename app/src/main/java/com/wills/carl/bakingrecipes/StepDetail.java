@@ -39,7 +39,7 @@ public class StepDetail extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putSerializable("step", step);
 
-        if (findViewById(R.id.step_detail_md) != null){
+        if (findViewById(R.id.step_detail_frag) != null){
             twoPane = true;
         }
 
@@ -97,16 +97,16 @@ public class StepDetail extends AppCompatActivity {
                     .commit();
         } else {
             if (fragmentManager.findFragmentById(R.id.step_container) != null &&
-                    fragmentManager.findFragmentById(R.id.step_detail_md) != null) {
+                    fragmentManager.findFragmentById(R.id.step_detail_frag) != null) {
                 fragmentManager
                         .beginTransaction()
                         .remove(fragmentManager.findFragmentById(R.id.step_container))
-                        .remove(fragmentManager.findFragmentById(R.id.step_detail_md)).commit();
+                        .remove(fragmentManager.findFragmentById(R.id.step_detail_frag)).commit();
             }
             fragmentManager
                     .beginTransaction()
                     .add(R.id.step_container, recipeDetailFragment)
-                    .add(R.id.step_detail_md, stepDetailFragment)
+                    .add(R.id.step_detail_frag, stepDetailFragment)
                     .commit();
         }
     }
