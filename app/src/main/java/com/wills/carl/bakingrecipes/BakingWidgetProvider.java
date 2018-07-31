@@ -16,16 +16,16 @@ public class BakingWidgetProvider extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
-        // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_widget_provider);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
 
-        //Create the intent to use when clicked on.
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_widget_provider);
+
+        //Create the pending intent to use when the widget is clicked
+        //Just create main activity when widget is clicked
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.appwidget_text, pendingIntent);
-        // Instruct the widget manager to update the widget
+
+        // Tell the widget manager to update the widget
         SharedPreferences prefs = context.getSharedPreferences("Prefs", 0);
         String currentIngreds = prefs.getString("ingreds", "Cannot retrieve ingredients for this recipe.");
 
@@ -35,7 +35,7 @@ public class BakingWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        // There may be multiple widgets active, so update all of them
+        // When there are multiple widgets active...
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
 

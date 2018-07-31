@@ -5,12 +5,12 @@ import java.util.ArrayList;
 
 public class Recipe implements Serializable{
 
-    int id;
-    String name;
-    ArrayList<Ingredient> ingredients;
-    ArrayList<Step> steps;
-    int servings;
-    String imageUrl;
+    private int id;
+    private String name;
+    private ArrayList<Ingredient> ingredients;
+    private ArrayList<Step> steps;
+    private int servings;
+    private String imageUrl;
 
     public Recipe(int id, String name, int servings, String imageUrl){
         this.id = id;

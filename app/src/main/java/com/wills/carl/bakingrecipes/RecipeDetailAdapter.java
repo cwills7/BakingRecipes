@@ -57,7 +57,6 @@ public class RecipeDetailAdapter extends BaseAdapter{
 
         if (position > 0) {
             final Step step = steps.get(position - 1);
-            Log.d("DEBUG", "Adding Step! " + step.getShortDesc());
             ingredientTv.setText(step.getId() + ". " + step.getShortDesc());
             if (!twoPane) {
                 Log.d("Debug", "Doesn't think we are two pane!");
@@ -75,7 +74,6 @@ public class RecipeDetailAdapter extends BaseAdapter{
             }
         } else{
             ingredientTv.setText(printIngredients());
-            Log.d("DEBUG", "Adding Ingreds! ");
         }
         return ingredientTv;
     }

@@ -23,8 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.recipe_card_rv) RecyclerView mrecipeCardRv;
 
-    @Nullable
-    private SimpleIdlerResource mIdlingResource;
     private RecipeItemAdapter recipeItemAdapter;
     private ArrayList<Recipe> recipeList;
     boolean twoPane;
@@ -57,12 +55,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @VisibleForTesting
-    @NonNull
-    public IdlingResource getIdlingResource() {
-        if (mIdlingResource == null) {
-            mIdlingResource = new SimpleIdlerResource();
-        }
-        return mIdlingResource;
-    }
 }

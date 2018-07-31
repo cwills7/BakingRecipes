@@ -64,6 +64,11 @@ public class StepDetailFragment extends Fragment{
         if (getArguments() != null){
             step = (Step) getArguments().getSerializable("step");
         }
+        if (savedInstanceState != null){
+            if (savedInstanceState.containsKey("curStep")){
+                step = (Step) savedInstanceState.getSerializable("curStep");
+            }
+        }
 
 
         View root = inflater.inflate(R.layout.step_detail_fragment, container, false);
@@ -81,8 +86,6 @@ public class StepDetailFragment extends Fragment{
         }
 
 
-
-
         instructions.setText(step.getDescription());
 
         return root;
@@ -91,9 +94,17 @@ public class StepDetailFragment extends Fragment{
     @Override
     public void onStop(){
         super.onStop();
+
+
         if (player !=null){
             player.release();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle state){
+        super.onSaveInstanceState(state);
+        state.putSerializable("curStep", step);
     }
 
     private void preparePlayer() {
@@ -117,10 +128,15 @@ public class StepDetailFragment extends Fragment{
 
            player.prepare(source);
        } catch(Exception e){
+           //In case the url wasn't to a video
            player.release();
            playerView.setVisibility(View.GONE);
            prepareIV(step.getVideoUrl());
        }
+    }
+
+    public void setStep(Step step){
+        this.step = step;
     }
 
     private void prepareIV(String urlString){
@@ -130,6 +146,7 @@ public class StepDetailFragment extends Fragment{
                     .load(urlString)
                     .into(imageView);
         }catch (Exception e){
+            //In case the url wasn't to an image
             imageView.setVisibility(View.GONE);
             Log.e("Step", "Cannot parse step media");
         }

@@ -7,11 +7,11 @@ import java.io.Serializable;
 
 public class Step implements Comparable<Step>, Serializable {
 
-    int id;
-    String shortDesc;
-    String description;
-    String videoUrl;
-    String thumbnailUrl;
+    private int id;
+    private String shortDesc;
+    private String description;
+    private String videoUrl;
+    private String thumbnailUrl;
 
     public Step (int id, String shortDesc, String description, String videoUrl, String thumbnailUrl){
         this.id = id;

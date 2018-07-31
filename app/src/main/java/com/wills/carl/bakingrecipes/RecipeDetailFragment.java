@@ -36,8 +36,7 @@ public class RecipeDetailFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        // This makes sure that the host activity has implemented the callback interface
-        // If not, it throws an exception
+        //Make sure we have implemented callback
         try {
             mCallback = (OnStepClick) context;
         } catch (ClassCastException e) {
@@ -68,11 +67,10 @@ public class RecipeDetailFragment extends Fragment {
         recipeDetailGv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // Trigger the callback method and pass in the position that was clicked
+                //Callback Trigger for dual pane mode
                 mCallback.onClick(recipe.getSteps().get(position), recipe.getSteps());
             }
         });
-
 
         return root;
     }

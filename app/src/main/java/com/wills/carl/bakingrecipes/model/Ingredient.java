@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 public class Ingredient implements Serializable{
 
-    double quantity;
-    String measure;
-    String name;
+    private double quantity;
+    private String measure;
+    private String name;
 
     public Ingredient (double quantity, String measure, String name){
         this.quantity = quantity;

@@ -10,12 +10,12 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/smaller_margin"
         android:background="#ffffff"
-        android:contentDescription="@string/appwidget_text"
-        android:text="@string/appwidget_text"
-        android:textColor="#363636"
-        android:textSize="18sp"
+        android:contentDescription="@string/widget_text"
+        android:text="@string/widget_text"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/standard_body"
         android:textStyle="bold|italic" />
 
 </RelativeLayout>

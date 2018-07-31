@@ -98,7 +98,7 @@ public class StepDetail extends AppCompatActivity {
         } else {
             if (fragmentManager.findFragmentById(R.id.step_container) != null &&
                     fragmentManager.findFragmentById(R.id.step_detail_frag) != null) {
-                fragmentManager
+                     fragmentManager
                         .beginTransaction()
                         .remove(fragmentManager.findFragmentById(R.id.step_container))
                         .remove(fragmentManager.findFragmentById(R.id.step_detail_frag)).commit();

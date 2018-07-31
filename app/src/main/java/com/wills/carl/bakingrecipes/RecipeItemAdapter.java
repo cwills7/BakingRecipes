@@ -73,11 +73,11 @@ public class RecipeItemAdapter extends RecyclerView.Adapter<RecipeItemAdapter.Vi
     }
 
     public void storeIngredsInSharedPref(Recipe recipe){
+        //Used for Widget
         SharedPreferences prefs = context.getSharedPreferences("Prefs", 0);
         SharedPreferences.Editor edit = prefs.edit();
         edit.putString("ingreds", recipe.printIngredients());
         edit.apply();
-
 
     }
 

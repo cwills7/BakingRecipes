@@ -6,6 +6,9 @@
     <dimen name="large_elevation">16dp</dimen>
     <dimen name="fragment_width">54dp</dimen>
     <dimen name="standard_pad">8dp</dimen>
+    <dimen name="mdDetail_width">500dp</dimen>
+    <dimen name="mdview_margin">400dp</dimen>
+    <dimen name="port_detail_width">300dp</dimen>
 
 
     <dimen name="standard_heading">24sp</dimen>

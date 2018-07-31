@@ -77,10 +77,7 @@ public class ParseJSON {
                 recipeList.add(recipe);
 
             }
-        }catch (IOException e){
-            Log.e("EXCEPTION", e.getMessage());
-
-        } catch (ParseException e){
+        }catch (IOException|ParseException e){
             Log.e("EXCEPTION", e.getMessage());
 
         }

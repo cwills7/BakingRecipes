@@ -8,7 +8,7 @@
 
     <FrameLayout
         android:name="com.wills.carl.bakingrecipes.RecipeDetailFragment"
-        android:layout_width="400dp"
+        android:layout_width="@dimen/mdview_margin"
         android:layout_height="match_parent"
         android:id="@+id/recipe_detail_frag">
     </FrameLayout>

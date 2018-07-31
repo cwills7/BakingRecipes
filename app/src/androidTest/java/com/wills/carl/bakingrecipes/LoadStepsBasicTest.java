@@ -37,19 +37,6 @@ public class LoadStepsBasicTest {
     public ActivityTestRule<MainActivity> mActivityRule =
             new ActivityTestRule(MainActivity.class);
 
-    private IdlingResource idlingResource;
-
-    @Before
-    public void registerIdlingResource() {
-        idlingResource = mActivityRule.getActivity().getIdlingResource();
-        IdlingRegistry.getInstance().register(idlingResource);
-    }
-
-    @After
-    public void unregisterIdlingResource() {
-        IdlingRegistry.getInstance().unregister(idlingResource);
-    }
-
     @Test
     public void startupShowsRecipes(){
         //1. Find the view
