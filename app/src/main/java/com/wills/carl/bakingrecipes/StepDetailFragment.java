@@ -52,6 +52,8 @@ public class StepDetailFragment extends Fragment{
 
     Step step;
     SimpleExoPlayer player;
+    boolean playWhenReady = false;
+    long playerPos = 0;
 
     public StepDetailFragment() {
 
@@ -59,18 +61,26 @@ public class StepDetailFragment extends Fragment{
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+    public void onCreate (Bundle state){
+        super.onCreate(state);
         if (getArguments() != null){
             step = (Step) getArguments().getSerializable("step");
         }
-        if (savedInstanceState != null){
-            if (savedInstanceState.containsKey("curStep")){
-                step = (Step) savedInstanceState.getSerializable("curStep");
+
+        if (state != null){
+            if (state.containsKey("curStep")){
+                step = (Step) state.getSerializable("curStep");
+                playWhenReady = (Boolean) state.getBoolean("playWhenReady");
+                playerPos = (Long) state.getLong("playerPosition");
+            } else {
+                playWhenReady = false;
+                playerPos = 0;
             }
         }
+    }
 
-
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.step_detail_fragment, container, false);
         ButterKnife.bind(this, root);
 
@@ -105,6 +115,10 @@ public class StepDetailFragment extends Fragment{
     public void onSaveInstanceState(Bundle state){
         super.onSaveInstanceState(state);
         state.putSerializable("curStep", step);
+        if (player != null) {
+            state.putLong("playerPosition", player.getCurrentPosition());
+            state.putBoolean("playWhenReady", player.getPlayWhenReady());
+        }
     }
 
     private void preparePlayer() {
@@ -125,8 +139,14 @@ public class StepDetailFragment extends Fragment{
            MediaSource source = new ExtractorMediaSource.Factory(dsf)
                    .createMediaSource(uri);
 
+           player.seekTo(playerPos);
+           player.setPlayWhenReady(playWhenReady);
+
 
            player.prepare(source);
+
+
+
        } catch(Exception e){
            //In case the url wasn't to a video
            player.release();

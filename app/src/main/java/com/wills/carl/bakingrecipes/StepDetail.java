@@ -86,27 +86,15 @@ public class StepDetail extends AppCompatActivity {
         RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
         stepDetailFragment.setArguments(bundle);
         if(!twoPane) {
-            if (fragmentManager.findFragmentById(R.id.step_container) != null) {
-                fragmentManager
-                        .beginTransaction()
-                        .remove(fragmentManager.findFragmentById(R.id.step_container)).commit();
-            }
             fragmentManager
                     .beginTransaction()
-                    .add(R.id.step_container, stepDetailFragment)
+                    .replace(R.id.step_container, stepDetailFragment)
                     .commit();
         } else {
-            if (fragmentManager.findFragmentById(R.id.step_container) != null &&
-                    fragmentManager.findFragmentById(R.id.step_detail_frag) != null) {
-                     fragmentManager
-                        .beginTransaction()
-                        .remove(fragmentManager.findFragmentById(R.id.step_container))
-                        .remove(fragmentManager.findFragmentById(R.id.step_detail_frag)).commit();
-            }
             fragmentManager
                     .beginTransaction()
-                    .add(R.id.step_container, recipeDetailFragment)
-                    .add(R.id.step_detail_frag, stepDetailFragment)
+                    .replace(R.id.step_container, recipeDetailFragment)
+                    .replace(R.id.step_detail_frag, stepDetailFragment)
                     .commit();
         }
     }

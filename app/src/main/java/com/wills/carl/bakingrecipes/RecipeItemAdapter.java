@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
 public class RecipeItemAdapter extends RecyclerView.Adapter<RecipeItemAdapter.ViewHolder>{
 
     private final LayoutInflater inflater;
-    private final ArrayList<Recipe> recipes;
+    private ArrayList<Recipe> recipes;
     private Context context;
 
 
@@ -79,6 +79,11 @@ public class RecipeItemAdapter extends RecyclerView.Adapter<RecipeItemAdapter.Vi
         edit.putString("ingreds", recipe.printIngredients());
         edit.apply();
 
+    }
+
+    public void setData(ArrayList<Recipe> recipeList){
+        this.recipes = recipeList;
+        this.notifyDataSetChanged();
     }
 
 

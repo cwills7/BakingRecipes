@@ -34,8 +34,8 @@ import static org.hamcrest.Matchers.anything;
 public class LoadStepsBasicTest {
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityRule =
-            new ActivityTestRule(MainActivity.class);
+    public ActivityTestRule<com.wills.carl.bakingrecipes.MainActivity> mActivityRule =
+            new ActivityTestRule(com.wills.carl.bakingrecipes.MainActivity.class);
 
     @Test
     public void startupShowsRecipes(){

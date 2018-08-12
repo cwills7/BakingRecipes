@@ -27,19 +27,13 @@ import java.util.ArrayList;
 
 public class ParseJSON {
 
-    public static ArrayList<Recipe> parseJson(Context c){
+    public static ArrayList<Recipe> parseJson(String data){
      ArrayList<Recipe> recipeList = new ArrayList<>();
 
         JSONParser parser = new JSONParser();
         try {
-            BufferedReader inputData =  new BufferedReader(new InputStreamReader(c.getResources().openRawResource(R.raw.baking)));
-            Writer out = new StringWriter();
-            String line = inputData.readLine();
-            while(line !=null){
-                out.write(line);
-                line = inputData.readLine();
-            }
-            JSONArray inputJson = (JSONArray) parser.parse(out.toString());
+
+            JSONArray inputJson = (JSONArray) parser.parse(data);
 
             for (Object obj: inputJson) {
                 JSONObject rec = (JSONObject) obj;
@@ -77,7 +71,7 @@ public class ParseJSON {
                 recipeList.add(recipe);
 
             }
-        }catch (IOException|ParseException e){
+        }catch (ParseException e){
             Log.e("EXCEPTION", e.getMessage());
 
         }

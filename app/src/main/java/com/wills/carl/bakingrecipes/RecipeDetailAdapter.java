@@ -27,66 +27,73 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RecipeDetailAdapter extends BaseAdapter{
+public class RecipeDetailAdapter extends RecyclerView.Adapter<RecipeDetailAdapter.ViewHolder>{
     private final ArrayList<Step> steps;
     private final ArrayList<Ingredient> ingredients;
     private boolean twoPane = false;
     private Context c;
+    private final LayoutInflater inflater;
+    RecipeDetailFragment.OnStepClick mCallback;
 
     private TextView ingredientTv;
 
 
-    public RecipeDetailAdapter(Context c, ArrayList<Step> stepList, ArrayList<Ingredient> ingredients, boolean twoPane){
+    public RecipeDetailAdapter(Context c, ArrayList<Step> stepList, ArrayList<Ingredient> ingredients, boolean twoPane, RecipeDetailFragment.OnStepClick mCallback){
         this.c = c;
         this.steps = stepList;
         this.ingredients = ingredients;
         this.twoPane = twoPane;
+        this.inflater = LayoutInflater.from(c);
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder{
+        TextView ingredientTv;
+        private ViewHolder(final View v){
+            super(v);
+            ingredientTv = v.findViewById(R.id.ingredients_tv);
+        }
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
+        View view = inflater.inflate(R.layout.recipe_detail_item, parent, false);
+        return new ViewHolder(view);
     }
 
 
-
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        if (convertView == null){
-          ingredientTv = new TextView(c);
-            ingredientTv.setLayoutParams(new TableLayout.LayoutParams(R.dimen.fragment_width, TableLayout.LayoutParams.WRAP_CONTENT, 1f));
-            ingredientTv.setBackground(c.getResources().getDrawable(R.drawable.textview_border));
-            ingredientTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, c.getResources().getDimension(R.dimen.standard_caption));
-        } else {
-            ingredientTv = (TextView) convertView;
+    @Override
+    public void onBindViewHolder(@NonNull final ViewHolder holder,int position) {
+        if (holder.ingredientTv == null){
+            holder.ingredientTv = new TextView(c);
+            holder.ingredientTv.setLayoutParams(new TableLayout.LayoutParams(R.dimen.fragment_width, TableLayout.LayoutParams.WRAP_CONTENT, 1f));
+            holder.ingredientTv.setBackground(c.getResources().getDrawable(R.drawable.textview_border));
+            holder.ingredientTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, c.getResources().getDimension(R.dimen.standard_caption));
         }
+
+
 
         if (position > 0) {
             final Step step = steps.get(position - 1);
-            ingredientTv.setText(step.getId() + ". " + step.getShortDesc());
+            holder.ingredientTv.setText(step.getId() + ". " + step.getShortDesc());
             if (!twoPane) {
                 Log.d("Debug", "Doesn't think we are two pane!");
-                ingredientTv.setOnClickListener(new View.OnClickListener() {
+                holder.ingredientTv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent detailIntent = new Intent(v.getContext(), StepDetail.class);
                         detailIntent.putExtra("stepList", steps);
                         detailIntent.putExtra("currentStep", step);
                         v.getContext().startActivity(detailIntent);
+                        mCallback.onClick(step, steps);
                     }
                 });
-            } else{
-
             }
         } else{
-            ingredientTv.setText(printIngredients());
+            holder.ingredientTv.setText(printIngredients());
         }
-        return ingredientTv;
     }
 
-    @Override
-    public Object getItem(int i){
-        if (i >= 1 && i < steps.size()){
-            return steps.get(i);
-        }
-        else{
-            return printIngredients();
-        }
-    }
 
     @Override
     public long getItemId(int i){
@@ -94,7 +101,7 @@ public class RecipeDetailAdapter extends BaseAdapter{
     }
 
     @Override
-    public int getCount() {
+    public int getItemCount() {
         return steps.size()+1;
     }
 
