@@ -79,6 +79,8 @@ public class RecipeItemAdapter extends RecyclerView.Adapter<RecipeItemAdapter.Vi
         edit.putString("ingreds", recipe.printIngredients());
         edit.apply();
 
+
+
     }
 
     public void setData(ArrayList<Recipe> recipeList){

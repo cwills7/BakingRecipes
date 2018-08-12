@@ -2,6 +2,7 @@ package com.wills.carl.bakingrecipes;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -41,6 +42,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        BakingWidgetProvider.WidgetBroadcastReceiver br = new BakingWidgetProvider.WidgetBroadcastReceiver();
+        IntentFilter intfil = new IntentFilter("android.appwidget.action.APPWIDGET_UPDATE");
+        registerReceiver(br, intfil);
 
         twoPane = false;
         if (findViewById(R.id.twoPaneInd) != null){

@@ -44,6 +44,7 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecipeDetailAdapte
         this.ingredients = ingredients;
         this.twoPane = twoPane;
         this.inflater = LayoutInflater.from(c);
+        this.mCallback = mCallback;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

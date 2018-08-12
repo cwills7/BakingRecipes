@@ -19,6 +19,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import android.support.test.espresso.IdlingResource;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -60,7 +61,7 @@ public class LoadStepsBasicTest {
     public void recipeStepClickShowsStepInfo(){
         onView(withId(R.id.recipe_card_rv))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onData(anything()).inAdapterView(withId(R.id.recipe_detail_gv)).atPosition(0).perform(click());
-        onView(withText("Recipe Introduction")).check(matches(isDisplayed()));
+        onView(withId(R.id.recipe_detail_rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withText("0. Recipe Introduction")).check(matches(isDisplayed()));
     }
 }

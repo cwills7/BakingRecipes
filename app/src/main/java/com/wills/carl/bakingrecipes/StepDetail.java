@@ -1,5 +1,7 @@
 package com.wills.carl.bakingrecipes;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.OnLifecycleEvent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +22,7 @@ public class StepDetail extends AppCompatActivity {
 
     int currentId;
     ArrayList<Step> stepList;
+    Step step;
 
     boolean twoPane;
 
@@ -29,10 +32,19 @@ public class StepDetail extends AppCompatActivity {
         setContentView(R.layout.step_detail);
         ButterKnife.bind(this);
 
-        final Step step = (Step) getIntent().getSerializableExtra("currentStep");
+        if (savedInstanceState != null){
+            step = (Step) savedInstanceState.getSerializable("currentStep");
+            currentId = (int) savedInstanceState.getInt("currentId");
+
+        }
+        else {
+            step = (Step) getIntent().getSerializableExtra("currentStep");
+            currentId = step.getId();
+
+        }
+
         stepList = (ArrayList<Step>) getIntent().getSerializableExtra("stepList");
         twoPane = false;
-        currentId = step.getId();
 
         checkBounds(currentId);
 
@@ -78,6 +90,16 @@ public class StepDetail extends AppCompatActivity {
 
 
     }
+
+    @Override
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    public void onSaveInstanceState(Bundle state){
+        super.onSaveInstanceState(state);
+        state.putSerializable("currentStep", stepList.get(currentId));
+        state.putInt("currentId", currentId);
+    }
+
+
 
     private void updateFragments(Bundle bundle) {
         FragmentManager fragmentManager = getSupportFragmentManager();
