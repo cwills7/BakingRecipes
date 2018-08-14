@@ -20,7 +20,6 @@ public class RecipeDetailFragment extends Fragment {
     Recipe recipe;
     RecipeDetailAdapter recipeDetailAdapter;
     boolean twoPane = false;
-    OnStepClick mCallback;
 
 
     public interface OnStepClick {
@@ -31,18 +30,6 @@ public class RecipeDetailFragment extends Fragment {
         //Empty constructor for fragment creation
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        //Make sure we have implemented callback
-        try {
-            mCallback = (OnStepClick) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement onStepClick");
-        }
-    }
 
 
     @Override
@@ -61,7 +48,7 @@ public class RecipeDetailFragment extends Fragment {
         recipeDetailRv = (RecyclerView) root.findViewById(R.id.recipe_detail_rv);
         layoutManager.canScrollVertically();
         recipeDetailRv.setLayoutManager(layoutManager);
-        recipeDetailAdapter = new RecipeDetailAdapter(root.getContext(), recipe.getSteps(), recipe.getIngredients(), twoPane, mCallback);
+        recipeDetailAdapter = new RecipeDetailAdapter(root.getContext(), recipe.getSteps(), recipe.getIngredients(), twoPane);
         recipeDetailRv.setAdapter(recipeDetailAdapter);
 
 
