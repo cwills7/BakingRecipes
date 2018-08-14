@@ -108,18 +108,10 @@ public class RecipeDetail extends AppCompatActivity implements RecipeDetailFragm
             StepDetailFragment stepDetailFragment = new StepDetailFragment();
             stepDetailFragment.setArguments(bundle);
             fm.beginTransaction()
-                    .add(stepDetailFrag.getId(), stepDetailFragment)
+                    .replace(stepDetailFrag.getId(), stepDetailFragment)
                     .commit();
 
-        } else {
-//            Log.e("FRAG", "Creating StepDetail.class");
-//
-//            Intent detailIntent = new Intent(this, StepDetail.class);
-//            detailIntent.putExtra("stepList", stepList);
-//            detailIntent.putExtra("currentStep", step);
-//            this.startActivity(detailIntent);
         }
-
     }
 
     public void storeIngredsInSharedPref(Recipe recipe){

@@ -86,12 +86,19 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecipeDetailAdapte
                         detailIntent.putExtra("stepList", steps);
                         detailIntent.putExtra("currentStep", step);
                         v.getContext().startActivity(detailIntent);
+                    }
+                });
+            } else {
+                holder.ingredientTv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         mCallback.onClick(step, steps);
                     }
                 });
             }
         } else{
             holder.ingredientTv.setText(printIngredients());
+
         }
     }
 

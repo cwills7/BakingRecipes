@@ -116,11 +116,19 @@ public class StepDetailFragment extends Fragment{
                 playWhenReady = false;
                 playerPos = 0;
             }
+        } else {
+            if (getArguments().getSerializable("step") != null){
+                step = (Step) getArguments().getSerializable("step");
+                stepList = (ArrayList<Step>) getArguments().getSerializable("stepList");
+                playWhenReady = (Boolean) getArguments().getBoolean("playWhenReady");
+                playerPos = (Long) getArguments().getLong("playerPosition");
+                currentId = step.getId();
+            }
         }
-        if (twoPane) {
-            backButton.setVisibility(View.INVISIBLE);
-            nextButton.setVisibility(View.INVISIBLE);
-        }
+//        if (twoPane) {
+//            backButton.setVisibility(View.INVISIBLE);
+//            nextButton.setVisibility(View.INVISIBLE);
+//        }
 
         if(backButton != null) {
             backButton.setOnClickListener(new View.OnClickListener() {
