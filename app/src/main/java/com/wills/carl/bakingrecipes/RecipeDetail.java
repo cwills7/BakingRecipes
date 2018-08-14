@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -61,11 +62,13 @@ public class RecipeDetail extends AppCompatActivity implements RecipeDetailFragm
         FragmentManager fragmentManager = getSupportFragmentManager();
         RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
         recipeDetailFragment.setArguments(bundle);
+        Log.e("FRAG", "Creating RecipeDetailFragment");
         fragmentManager.beginTransaction()
-                .add(recipeDetailFrag.getId(), recipeDetailFragment)
+                .replace(recipeDetailFrag.getId(), recipeDetailFragment)
                 .commit();
 
         if (twoPane){
+            Log.e("FRAG", "Replacing Two Pane Fragments From RecipeDetail.java");
             StepDetailFragment stepDetailFragment = new StepDetailFragment();
             bundle.putSerializable("step", recipe.getSteps().get(0));
             stepDetailFragment.setArguments(bundle);
@@ -96,6 +99,8 @@ public class RecipeDetail extends AppCompatActivity implements RecipeDetailFragm
     @Override
     public void onClick(Step step, ArrayList<Step> stepList) {
         if (twoPane) {
+            Log.e("FRAG", "Replacing Two Pane Fragments from RecipeDetail onClick");
+
             Bundle bundle = new Bundle();
             bundle.putSerializable("step", step);
             bundle.putBoolean("twoPane", twoPane);
@@ -103,14 +108,16 @@ public class RecipeDetail extends AppCompatActivity implements RecipeDetailFragm
             StepDetailFragment stepDetailFragment = new StepDetailFragment();
             stepDetailFragment.setArguments(bundle);
             fm.beginTransaction()
-                    .replace(stepDetailFrag.getId(), stepDetailFragment)
+                    .add(stepDetailFrag.getId(), stepDetailFragment)
                     .commit();
 
         } else {
-            Intent detailIntent = new Intent(this, StepDetail.class);
-            detailIntent.putExtra("stepList", stepList);
-            detailIntent.putExtra("currentStep", step);
-            this.startActivity(detailIntent);
+//            Log.e("FRAG", "Creating StepDetail.class");
+//
+//            Intent detailIntent = new Intent(this, StepDetail.class);
+//            detailIntent.putExtra("stepList", stepList);
+//            detailIntent.putExtra("currentStep", step);
+//            this.startActivity(detailIntent);
         }
 
     }

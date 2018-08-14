@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcel;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,20 +41,31 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Optional;
 
 public class StepDetailFragment extends Fragment{
 
+    @Nullable
     @BindView(R.id.step_instructions) TextView instructions;
     @BindView(R.id.exo_pv) SimpleExoPlayerView playerView;
     @BindView(R.id.step_image) ImageView imageView;
+    @Nullable
+    @BindView(R.id.back_button) Button backButton;
+    @Nullable
+    @BindView(R.id.next_button) Button nextButton;
 
     Step step;
+    ArrayList<Step> stepList;
     SimpleExoPlayer player;
+    int currentId;
     boolean playWhenReady = false;
     long playerPos = 0;
+    boolean twoPane;
+    View root;
 
     public StepDetailFragment() {
 
@@ -63,30 +75,79 @@ public class StepDetailFragment extends Fragment{
     @Override
     public void onCreate (Bundle state){
         super.onCreate(state);
+
         if (getArguments() != null){
             step = (Step) getArguments().getSerializable("step");
+            stepList = (ArrayList<Step>) getArguments().getSerializable("stepList");
+            playWhenReady = (Boolean) getArguments().getBoolean("playWhenReady");
+            playerPos = (Long) getArguments().getLong("playerPosition");
+            twoPane = (Boolean) getArguments().getBoolean("twoPane");
+            currentId = step.getId();
         }
 
-        if (state != null){
-            if (state.containsKey("curStep")){
-                step = (Step) state.getSerializable("curStep");
-                playWhenReady = (Boolean) state.getBoolean("playWhenReady");
-                playerPos = (Long) state.getLong("playerPosition");
+        Log.e("FRAG", "Creating Detail Fragment");
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        root = inflater.inflate(R.layout.step_detail_fragment, container, false);
+           ButterKnife.bind(this, root);
+
+        return root;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+
+        Log.e("CREATION", "OnViewCreated in StepDetailFragment");
+        playerView.setVisibility(View.GONE);
+        imageView.setVisibility(View.GONE);
+
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey("step")) {
+                step = (Step) savedInstanceState.getSerializable("step");
+                stepList = (ArrayList<Step>) savedInstanceState.getSerializable("stepList");
+                playWhenReady = (Boolean) savedInstanceState.getBoolean("playWhenReady");
+                playerPos = (Long) savedInstanceState.getLong("playerPosition");
+                currentId = step.getId();
             } else {
                 playWhenReady = false;
                 playerPos = 0;
             }
         }
+        if (twoPane) {
+            backButton.setVisibility(View.INVISIBLE);
+            nextButton.setVisibility(View.INVISIBLE);
+        }
+
+        if(backButton != null) {
+            backButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    step = stepList.get(currentId - 1);
+                    currentId--;
+                    checkBounds(currentId);
+                    handleMedia();
+                }
+            });
+
+            nextButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    step = stepList.get(currentId + 1);
+                    currentId++;
+                    checkBounds(currentId);
+                    handleMedia();
+                }
+            });
+        }
+
+        handleMedia();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.step_detail_fragment, container, false);
-        ButterKnife.bind(this, root);
-
-        playerView.setVisibility(View.GONE);
-        imageView.setVisibility(View.GONE);
-
+    private void handleMedia() {
         if(step.getVideoUrl() != null && !step.getVideoUrl().isEmpty()) {
             preparePlayer();
         } else if (step.getThumbnailUrl() != null && !step.getThumbnailUrl().isEmpty()) {
@@ -96,9 +157,9 @@ public class StepDetailFragment extends Fragment{
         }
 
 
-        instructions.setText(step.getDescription());
-
-        return root;
+        if(instructions != null) {
+            instructions.setText(step.getDescription());
+        }
     }
 
     @Override
@@ -114,7 +175,8 @@ public class StepDetailFragment extends Fragment{
     @Override
     public void onSaveInstanceState(Bundle state){
         super.onSaveInstanceState(state);
-        state.putSerializable("curStep", step);
+        state.putSerializable("step", step);
+        state.putSerializable("stepList", stepList);
         if (player != null) {
             state.putLong("playerPosition", player.getCurrentPosition());
             state.putBoolean("playWhenReady", player.getPlayWhenReady());
@@ -123,6 +185,7 @@ public class StepDetailFragment extends Fragment{
 
     private void preparePlayer() {
        try {
+           Log.e("PLAYER", "Preparing Player");
            playerView.setVisibility(View.VISIBLE);
            Uri uri = Uri.parse(step.getVideoUrl());
 
@@ -143,7 +206,7 @@ public class StepDetailFragment extends Fragment{
            player.setPlayWhenReady(playWhenReady);
 
 
-           player.prepare(source);
+           player.prepare(source, false, false);
 
 
 
@@ -170,5 +233,16 @@ public class StepDetailFragment extends Fragment{
             imageView.setVisibility(View.GONE);
             Log.e("Step", "Cannot parse step media");
         }
+    }
+
+    private void checkBounds(int currentId){
+        backButton.setVisibility(View.VISIBLE);
+        nextButton.setVisibility(View.VISIBLE);
+        if (currentId <= 0){
+            backButton.setVisibility(View.INVISIBLE);
+        } else if (currentId == stepList.size() -1) {
+            nextButton.setVisibility(View.INVISIBLE);
+        }
+
     }
 }

@@ -5,6 +5,7 @@ import android.arch.lifecycle.OnLifecycleEvent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -17,14 +18,15 @@ import butterknife.ButterKnife;
 
 public class StepDetail extends AppCompatActivity {
 
-    @BindView(R.id.back_button) Button backBtn;
-    @BindView(R.id.next_button) Button nextBtn;
-
     int currentId;
     ArrayList<Step> stepList;
     Step step;
 
     boolean twoPane;
+    StepDetailFragment stepDetailFragment;
+    RecipeDetailFragment recipeDetailFragment;
+
+    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -32,67 +34,54 @@ public class StepDetail extends AppCompatActivity {
         setContentView(R.layout.step_detail);
         ButterKnife.bind(this);
 
-        if (savedInstanceState != null){
-            step = (Step) savedInstanceState.getSerializable("currentStep");
-            currentId = (int) savedInstanceState.getInt("currentId");
+        Log.e("CREATION", "Creating Step Detail Class");
 
-        }
-        else {
-            step = (Step) getIntent().getSerializableExtra("currentStep");
-            currentId = step.getId();
+        bundle = savedInstanceState;
 
-        }
-
-        stepList = (ArrayList<Step>) getIntent().getSerializableExtra("stepList");
         twoPane = false;
-
-        checkBounds(currentId);
-
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("step", step);
 
         if (findViewById(R.id.step_detail_frag) != null){
             twoPane = true;
         }
 
-        updateFragments(bundle);
-
-        //Create Fragments and add them.
-        //Check to make sure the screen orientation.
-
-        if(twoPane){
-            backBtn.setVisibility(View.INVISIBLE);
-            nextBtn.setVisibility(View.INVISIBLE);
-        } else {
-            backBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bundle b = new Bundle();
-                    b.putSerializable("step", stepList.get(currentId - 1));
-                    updateFragments(b);
-                    currentId--;
-                    checkBounds(currentId);
-                }
-            });
-
-            nextBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bundle b = new Bundle();
-                    b.putSerializable("step", stepList.get(currentId + 1));
-                    updateFragments(b);
-                    currentId++;
-                    checkBounds(currentId);
-                }
-            });
-        }
+        stepList = (ArrayList<Step>) getIntent().getSerializableExtra("stepList");
+        step = (Step) getIntent().getSerializableExtra("currentStep");
+        currentId = step.getId();
+        bundle = new Bundle();
+        bundle.putSerializable("stepList",stepList);
+        bundle.putSerializable("step", step);
+        bundle.putBoolean("playWhenReady", false);
+        bundle.putLong("playerPosition", 0);
+        bundle.putBoolean("twoPane", twoPane);
 
 
 
     }
 
     @Override
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    public void onDestroy(){
+        super.onDestroy();
+        Log.e("DESTRUCTION", "Step Detail Activity Destroyed");
+    }
+
+
+    @Override
+    public void onStart(){
+        super.onStart();
+
+        //Don't want to create the fragments again if we hit the back button
+            stepDetailFragment = new StepDetailFragment();
+            recipeDetailFragment = new RecipeDetailFragment();
+            updateFragments(bundle);
+
+
+
+        //Create Fragments and add them.
+        //Check to make sure the screen orientation.
+
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle state){
         super.onSaveInstanceState(state);
         state.putSerializable("currentStep", stepList.get(currentId));
@@ -104,33 +93,28 @@ public class StepDetail extends AppCompatActivity {
     private void updateFragments(Bundle bundle) {
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        StepDetailFragment stepDetailFragment = new StepDetailFragment();
-        RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
+
         stepDetailFragment.setArguments(bundle);
-        if(!twoPane) {
-            fragmentManager
-                    .beginTransaction()
-                    .replace(R.id.step_container, stepDetailFragment)
-                    .commit();
+        if(!twoPane){
+            if (fragmentManager.findFragmentByTag("StepDetail") == null) {
+                Log.e("FRAG", "Replacing Detail Container");
+
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.step_container, stepDetailFragment, "StepDetail")
+                        .commit();
+            }
         } else {
+            Log.e("FRAG", "Replacing Two Pane Fragments");
             fragmentManager
                     .beginTransaction()
-                    .replace(R.id.step_container, recipeDetailFragment)
-                    .replace(R.id.step_detail_frag, stepDetailFragment)
+                    .add(R.id.step_container, recipeDetailFragment, "RecipeDetail")
+                    .add(R.id.step_detail_frag, stepDetailFragment, "StepDetail")
                     .commit();
         }
     }
 
-    private void checkBounds(int currentId){
-        backBtn.setVisibility(View.VISIBLE);
-        nextBtn.setVisibility(View.VISIBLE);
-        if (currentId <= 0){
-            backBtn.setVisibility(View.INVISIBLE);
-        } else if (currentId == stepList.size() -1) {
-            nextBtn.setVisibility(View.INVISIBLE);
-        }
 
-    }
 
 
 }

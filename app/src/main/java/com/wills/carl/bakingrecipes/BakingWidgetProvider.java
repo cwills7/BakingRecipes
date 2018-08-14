@@ -39,11 +39,13 @@ public class BakingWidgetProvider extends AppWidgetProvider {
     }
 
     private static void updateWidg(Context context, AppWidgetManager appWidgetManager, int appWidgetId, RemoteViews views) {
-        SharedPreferences prefs = context.getSharedPreferences("Prefs", 0);
-        String currentIngreds = prefs.getString("ingreds", "Cannot retrieve ingredients for this recipe.");
 
-        views.setTextViewText(R.id.appwidget_text, currentIngreds);
-        appWidgetManager.updateAppWidget(appWidgetId, views);
+//        if (appWidgetManager.getAppWidgetInfo(appWidgetId) == null) return;
+//        SharedPreferences prefs = context.getSharedPreferences("Prefs", 0);
+//        String currentIngreds = prefs.getString("ingreds", "Cannot retrieve ingredients for this recipe.");
+//
+//        views.setTextViewText(R.id.appwidget_text, currentIngreds);
+//        appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
     @Override

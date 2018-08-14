@@ -14,13 +14,6 @@
         android:id="@+id/step_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    <TextView
-        android:id="@+id/step_instructions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/standard_heading"
-        android:textColor="@android:color/black"
-        android:layout_below="@id/exo_pv"
-        android:padding="@dimen/smaller_margin"/>
+
 
 </RelativeLayout>
