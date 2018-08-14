@@ -33,16 +33,18 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecipeDetailAdapte
     private boolean twoPane = false;
     private Context c;
     private final LayoutInflater inflater;
+    RecipeDetailFragment.OnStepClick mCallback;
 
     private TextView ingredientTv;
 
 
-    public RecipeDetailAdapter(Context c, ArrayList<Step> stepList, ArrayList<Ingredient> ingredients, boolean twoPane){
+    public RecipeDetailAdapter(Context c, ArrayList<Step> stepList, ArrayList<Ingredient> ingredients, boolean twoPane, RecipeDetailFragment.OnStepClick mCallback){
         this.c = c;
         this.steps = stepList;
         this.ingredients = ingredients;
         this.twoPane = twoPane;
         this.inflater = LayoutInflater.from(c);
+        this.mCallback = mCallback;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -84,6 +86,7 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecipeDetailAdapte
                         detailIntent.putExtra("stepList", steps);
                         detailIntent.putExtra("currentStep", step);
                         v.getContext().startActivity(detailIntent);
+                        mCallback.onClick(step, steps);
                     }
                 });
             }
